@@ -510,3 +510,9 @@ plot(j)
 
 
  
+
+nasa1 <- as_data_frame(nasa)
+
+
+
+

@@ -1,0 +1,55 @@
+
+
+### create a time-series dataset based on the data
+
+dts <- ts(nottem, start=c(1920,1), end=c(1939,12), frequency=12)
+
+
+## change the size of the graphs
+options(repr.plot.width = 4, repr.plot.height = 4)
+plot(dts)
+
+
+stationary_dts <- decompose(dts)
+plot(stationary_dts)
+
+View(stationary_dts)
+# # Predicting the future tendency using ARIMA regression
+# To be able to run the ARIMA model, we have to determine three parameters: p, d ,q.  
+# They derivative parts of the AR-I-MA. The p part is obtined by examining the autocorrelation 
+# of the series. We need to determine the correct time lag to define the parameters of the model 
+# by running the autocorrelation (acf) and partial autocorrelation (pacf) functions.
+
+acf(dts)
+pacf(dts)
+
+dts_arima <- arima(dts, order=c(2,0,0))
+dts_arima
+
+
+## The ARIMA model gives us the formula for calculating the next value in the data series. The values of the betas are provided by the ar1 and ar2 variables. the formula is like most of the regressions we have learned:
+
+# Xt = (1.2831 * Xt-1) + (-0.3322 * Xt-2) + 280.4696 
+
+### Forecasting using the ARIMA predictive model
+
+library(forecast)
+dts_fit <- forecast(dts_arima)
+dts_fit
+
+plot(dts_fit)
+
+
+## For finding the optimal ARIMA model we have to change the values of d and q and compare the models using the AIC statistic (the less the best).
+
+## R have a function that search for the best model automatically: auto.arima
+
+dts_autoarima <- auto.arima(dts)
+dts_autoarima
+
+dts_autoforecast <- forecast(dts_autoarima)
+dts_autoforecast
+
+plot(dts_autoforecast)
+
+
