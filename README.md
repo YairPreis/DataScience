@@ -1,1 +1,1 @@
-This is my first README--
+This is my first Data Science corse folder ( year 2020 )
